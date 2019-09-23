@@ -35,6 +35,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.UserVi
         final Data currentData =listDataInfo.get(position);
         holder.txtTitle.setText(currentData.getDatatitle());
         holder.txtIsi.setText(currentData.getDataisi());
+        holder.date.setText(currentData.getTanggal());
     }
 
     @Override
@@ -46,11 +47,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.UserVi
     }
 
     public class UserViewHolder extends RecyclerView.ViewHolder  {
-    TextView txtTitle,txtIsi;
+    TextView txtTitle,txtIsi,date;
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             txtTitle = itemView.findViewById(R.id.Title);
             txtIsi = itemView.findViewById(R.id.isi);
+            date = itemView.findViewById(R.id.date);
         }
     }
 }

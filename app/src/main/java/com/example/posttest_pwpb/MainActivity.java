@@ -52,32 +52,36 @@ FloatingActionButton buttonAdd;
     }
 
 });
+        refresh();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        databaseData.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Datalist.clear();
-
-                for (DataSnapshot dataSnapShot : dataSnapshot.getChildren()){
-                    Data data = dataSnapShot.getValue(Data.class);
-
-                    Datalist.add(data);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        RecyclerAdapter adapter = new RecyclerAdapter(MainActivity.this,MainActivity.this,Datalist);
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-    }
+        refresh();
 }
+private void refresh(){
+    databaseData.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            Datalist.clear();
+
+            for (DataSnapshot dataSnapShot : dataSnapshot.getChildren()){
+                Data data = dataSnapShot.getValue(Data.class);
+
+                Datalist.add(data);
+            }
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    });
+    RecyclerAdapter adapter = new RecyclerAdapter(MainActivity.this,MainActivity.this,Datalist);
+    recyclerView.setAdapter(adapter);
+    adapter.notifyDataSetChanged();
+}
+    }
+

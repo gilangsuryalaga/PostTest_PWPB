@@ -1,6 +1,7 @@
 package com.example.posttest_pwpb;
 
 public class Data {
+    String tanggal;
     String dataid;
     String datatitle;
     String dataisi;
@@ -10,11 +11,15 @@ public class Data {
 
     }
 
-    public Data(String dataid,String datatitle, String dataisi) {
-        this.dataid= dataid;
+    public Data(String tanggal, String dataid, String datatitle, String dataisi) {
+        this.tanggal = tanggal;
+        this.dataid = dataid;
         this.datatitle = datatitle;
         this.dataisi = dataisi;
+    }
 
+    public String getTanggal() {
+        return tanggal;
     }
 
     public String getDataid() {

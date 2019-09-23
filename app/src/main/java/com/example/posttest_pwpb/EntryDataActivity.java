@@ -13,6 +13,9 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class EntryDataActivity extends AppCompatActivity {
     Button buttonAdd;
     EditText editJudul;
@@ -43,11 +46,13 @@ public class EntryDataActivity extends AppCompatActivity {
         databaseData = FirebaseDatabase.getInstance().getReference("Data");
         String judul = editJudul.getText().toString().trim();
         String isi = editIsi.getText().toString().trim();
+        SimpleDateFormat tanggal = new SimpleDateFormat("dd/MM/yyyy' 'hh:mm:ss");
+        String tglsekarang = tanggal.format(new Date());
         if (!TextUtils.isEmpty(judul)) {
 
             String id = databaseData.push().getKey();
 
-            Data data = new Data(id,judul,isi);
+            Data data = new Data(tglsekarang,id,judul,isi);
 
             databaseData.child(id).setValue(data);
 
