@@ -21,6 +21,8 @@ public class EntryDataActivity extends AppCompatActivity {
     EditText editJudul;
     EditText editIsi;
     Context context;
+    String nomor = "Submit", submit;
+    Data update;
     DatabaseReference databaseData;
 
     @Override
@@ -31,13 +33,44 @@ public class EntryDataActivity extends AppCompatActivity {
         buttonAdd = (Button) findViewById(R.id.add_data);
         editJudul = (EditText) findViewById(R.id.editjudul);
         editIsi = (EditText) findViewById(R.id.editisi);
-
+        submit = getIntent().getStringExtra("UPDATE_ACTION");
+        update = getIntent().getParcelableExtra("UPDATE_INTENT");
         databaseData = FirebaseDatabase.getInstance().getReference("Data");
+        if (submit == null){
+            submit = "Submit";
+        }else  {
+            nomor = String.valueOf(update.getDataid());
+        }
+
+        if(submit.equals("Edit")){
+            buttonAdd.setText("Edit");
+            editJudul.setText(update.getDatatitle());
+            editIsi.setText(update.getDataisi());
+        }
+
+
 
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addData();
+                String label = buttonAdd.getText().toString();
+                if (label.equals("Tambah")){
+                    addData();
+                }
+
+                if (label.equals("Edit")){
+                    String id = update.getDataid();
+                    String judul = update.getDatatitle();
+                    String isi = update.getDataisi();
+                    SimpleDateFormat tanggal = new SimpleDateFormat("dd/MM/yyyy' 'hh:mm:ss");
+                    String tglsekarang = tanggal.format(new Date());
+                    if (TextUtils.isEmpty(judul)){
+                        editJudul.setError("Judul kosong");
+                        return;
+                    }
+                    Updatedata(tglsekarang, id,judul,isi);
+                }
+
             }
         });
     }
@@ -58,8 +91,19 @@ public class EntryDataActivity extends AppCompatActivity {
 
             Toast.makeText(this, "Data added", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, "You should enter a name", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "You should enter a Title", Toast.LENGTH_LONG).show();
         }
+    }
+    private boolean Updatedata(String tanggal,String id, String judul, String isi){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Data").child(id);
+        Data data= new Data(tanggal, id, judul, isi);
+
+        databaseReference.setValue(data);
+
+        Toast.makeText(this, "Data Updated Succesfully", Toast.LENGTH_LONG).show();
+
+        return true;
+
     }
 
 }

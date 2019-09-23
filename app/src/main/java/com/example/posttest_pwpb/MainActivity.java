@@ -1,13 +1,16 @@
 package com.example.posttest_pwpb;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -83,5 +86,33 @@ private void refresh(){
     recyclerView.setAdapter(adapter);
     adapter.notifyDataSetChanged();
 }
+
+    @Override
+    public void onUserAction(final Data data) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Pilihan")
+                .setPositiveButton("Edit Data", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent updatedata = new Intent(context, EntryDataActivity.class);
+                        updatedata.putExtra("UPDATE_INTENT",(Parcelable) data);
+                        updatedata.putExtra("UPDATE_ACTION", "Edit");
+                        startActivity(updatedata);
+                    }
+                })
+                .setNegativeButton("Hapus Data", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String id = data.getDataid();
+                        DatabaseReference databaseData = FirebaseDatabase.getInstance().getReference("Data").child(id);
+
+                        databaseData.removeValue();
+                        onStart();
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
+    }
+
 

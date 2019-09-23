@@ -1,6 +1,9 @@
 package com.example.posttest_pwpb;
 
-public class Data {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Data implements Parcelable {
     String tanggal;
     String dataid;
     String datatitle;
@@ -32,5 +35,15 @@ public class Data {
 
     public String getDataisi() {
         return dataisi;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+
     }
 }
